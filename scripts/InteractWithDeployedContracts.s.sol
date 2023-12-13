@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
 import "forge-std/Script.sol";
@@ -13,7 +13,7 @@ import "../src/interfaces/IWETH9.sol";
 * @author Julien P.
 * @notice 
 *   Some interactions with an already deployed contract
-*   I took the WETH9 contract, and test it on a local fork of mainnet
+*   I took the WETH9 contract, and tested it on a local fork of mainnet
 *   We use startHoax(walletAddress) to call methods as a wallet,
 *   as making operation with a contract's address (default case) can lead to some bugs
 */
@@ -45,10 +45,10 @@ contract InteractWithDeployedContractScript is Script, Test {
 
     /*
     * @author Julien P.
-    * @notice Display in logs the actuel contract's balance
+    * @notice Display in logs the actual contract's balance
     */
     function _showContractBalance() internal {
-        console.log(string.concat("Contract balance : ", Strings.toString(_deployedContract.totalSupply())));
+        console.log(string.concat("Contract's balance : ", Strings.toString(_deployedContract.totalSupply())));
     }
 
     /*
@@ -78,7 +78,7 @@ contract InteractWithDeployedContractScript is Script, Test {
 
     /*
     * @author Julien P.
-    * @notice Withdraw the given amoung
+    * @notice Withdraw the given amount
     * @param    uint    The amount to withdraw
     */
     function _withdraw(uint amount) internal {
