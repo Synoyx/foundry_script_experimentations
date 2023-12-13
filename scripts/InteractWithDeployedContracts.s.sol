@@ -13,6 +13,8 @@ import "../src/interfaces/IWETH9.sol";
 * @notice 
 *   Some interactions with an already deployed contract
 *   I took the WETH9 contract, and test it on a local fork of mainnet
+*   All operations must be done with a vm.prank() before,
+*   as making operation with a contract's address (default case) can lead to some bugs
 */
 contract InteractWithDeployedContractScript is Script {
     address immutable WETH9_CONTRACT_ADDRESS = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
@@ -33,7 +35,7 @@ contract InteractWithDeployedContractScript is Script {
         _showContractBalance();
         uint accountBalance = _showBalanceOfGivenAccount(ANVIL_FIRST_ADDRESS);
 
-        _withdraw(accountBalance); // Broken for the moment
+        _withdraw(accountBalance);
 
         _showContractBalance();
         _showBalanceOfGivenAccount(ANVIL_FIRST_ADDRESS);
@@ -75,6 +77,11 @@ contract InteractWithDeployedContractScript is Script {
         return accountBalance;
     }
 
+    /*
+    * @author Julien P.
+    * @notice Withdraw the given amoung
+    * @param    uint    The amount to withdraw
+    */
     function _withdraw(uint amount) internal {
         vm.prank(ANVIL_FIRST_ADDRESS);
         _deployedContract.withdraw(amount);
