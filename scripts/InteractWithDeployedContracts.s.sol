@@ -47,7 +47,7 @@ contract InteractWithDeployedContractScript is Script, Test {
     * @author Julien P.
     * @notice Display in logs the actual contract's balance
     */
-    function _showContractBalance() internal {
+    function _showContractBalance() view internal {
         console.log(string.concat("Contract's balance : ", Strings.toString(_deployedContract.totalSupply())));
     }
 
@@ -67,7 +67,7 @@ contract InteractWithDeployedContractScript is Script, Test {
     * @notice Shows the given account balance in WETH
     * @return    uint    The given account's balance
     */
-    function _showBalanceOfGivenAccount(address accountAddress) internal returns(uint) {
+    function _showBalanceOfGivenAccount(address accountAddress) view internal returns(uint) {
         uint accountBalance = _deployedContract.balanceOf(accountAddress);
 
         console.log(string.concat("Balance of account ", Strings.toHexString(uint256(uint160(accountAddress)), 20), 
