@@ -30,7 +30,7 @@ contract InteractWithDeployedContractScript is Script {
         _showContractBalance();
         uint accountBalance = _showBalanceOfGivenAccount(address(this));
 
-        //_withdraw(1 ether); // Brocked for the moment
+        _withdraw(1 wei); // Broken for the moment
 
         _showContractBalance();
         _showBalanceOfGivenAccount(address(this));
