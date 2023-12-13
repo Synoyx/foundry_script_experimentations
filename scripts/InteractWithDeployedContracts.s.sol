@@ -16,31 +16,35 @@ import "../src/interfaces/IWETH9.sol";
 */
 contract InteractWithDeployedContractScript is Script {
     address immutable WETH9_CONTRACT_ADDRESS = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+    address immutable ANVIL_FIRST_ADDRESS = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
     WETH9 _deployedContract;
 
     function run() external {
+
         // Accessing to already deployed contract with his address
         _deployedContract = WETH9(WETH9_CONTRACT_ADDRESS);
 
+
         _showContractBalance();
-        _showBalanceOfGivenAccount(address(this));
+        _showBalanceOfGivenAccount(ANVIL_FIRST_ADDRESS);
 
         _makeDeposit(10 ether);
 
         _showContractBalance();
-        uint accountBalance = _showBalanceOfGivenAccount(address(this));
+        uint accountBalance = _showBalanceOfGivenAccount(ANVIL_FIRST_ADDRESS);
 
-        _withdraw(1 wei); // Broken for the moment
+        _withdraw(accountBalance); // Broken for the moment
 
         _showContractBalance();
-        _showBalanceOfGivenAccount(address(this));
+        _showBalanceOfGivenAccount(ANVIL_FIRST_ADDRESS);
     }
 
     /*
     * @author Julien P.
     * @notice Display in logs the actuel contract's balance
     */
-    function _showContractBalance() view internal {
+    function _showContractBalance() internal {
+        vm.prank(ANVIL_FIRST_ADDRESS);
         console.log(string.concat("Contract balance : ", Strings.toString(_deployedContract.totalSupply())));
     }
 
@@ -52,6 +56,7 @@ contract InteractWithDeployedContractScript is Script {
     * @param    uint    The amount to deposit
     */
     function _makeDeposit(uint amount) internal {
+        vm.prank(ANVIL_FIRST_ADDRESS);
         _deployedContract.deposit{value: amount}();
     }
 
@@ -60,7 +65,8 @@ contract InteractWithDeployedContractScript is Script {
     * @notice Shows the given account balance in WETH
     * @return    uint    The given account's balance
     */
-    function _showBalanceOfGivenAccount(address accountAddress) view internal returns(uint) {
+    function _showBalanceOfGivenAccount(address accountAddress) internal returns(uint) {
+        vm.prank(ANVIL_FIRST_ADDRESS);
         uint accountBalance = _deployedContract.balanceOf(accountAddress);
 
         console.log(string.concat("Balance of account ", Strings.toHexString(uint256(uint160(accountAddress)), 20), 
@@ -70,6 +76,7 @@ contract InteractWithDeployedContractScript is Script {
     }
 
     function _withdraw(uint amount) internal {
+        vm.prank(ANVIL_FIRST_ADDRESS);
         _deployedContract.withdraw(amount);
     }
 }
