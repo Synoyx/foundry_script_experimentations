@@ -3,4 +3,11 @@ src = "src"
 out = "out"
 libs = ["lib"]
 
-# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+remappings = [
+    'test/=test/',
+    '@openzeppelin/contracts=../../../node_modules/@openzeppelin/contracts/',
+    '@ngquests/contracts/=../../../node_modules/@ngquests/contracts/'
+]
+
+[rpc_endpoints]
+localhost = 'http://localhost:8545'
