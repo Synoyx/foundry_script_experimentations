@@ -3,6 +3,7 @@ pragma solidity ^0.8.19;
 
 import "forge-std/Script.sol";
 import "forge-std/console.sol";
+import "forge-std/Test.sol";
 import "openzeppelin/contracts/utils/Strings.sol";
 
 import "../src/interfaces/IWETH9.sol";
@@ -13,15 +14,16 @@ import "../src/interfaces/IWETH9.sol";
 * @notice 
 *   Some interactions with an already deployed contract
 *   I took the WETH9 contract, and test it on a local fork of mainnet
-*   All operations must be done with a vm.prank() before,
+*   We use startHoax(walletAddress) to call methods as a wallet,
 *   as making operation with a contract's address (default case) can lead to some bugs
 */
-contract InteractWithDeployedContractScript is Script {
+contract InteractWithDeployedContractScript is Script, Test {
     address immutable WETH9_CONTRACT_ADDRESS = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
     address immutable ANVIL_FIRST_ADDRESS = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
     WETH9 _deployedContract;
 
     function run() external {
+        startHoax(ANVIL_FIRST_ADDRESS);
 
         // Accessing to already deployed contract with his address
         _deployedContract = WETH9(WETH9_CONTRACT_ADDRESS);
@@ -46,7 +48,6 @@ contract InteractWithDeployedContractScript is Script {
     * @notice Display in logs the actuel contract's balance
     */
     function _showContractBalance() internal {
-        vm.prank(ANVIL_FIRST_ADDRESS);
         console.log(string.concat("Contract balance : ", Strings.toString(_deployedContract.totalSupply())));
     }
 
@@ -58,7 +59,6 @@ contract InteractWithDeployedContractScript is Script {
     * @param    uint    The amount to deposit
     */
     function _makeDeposit(uint amount) internal {
-        vm.prank(ANVIL_FIRST_ADDRESS);
         _deployedContract.deposit{value: amount}();
     }
 
@@ -68,7 +68,6 @@ contract InteractWithDeployedContractScript is Script {
     * @return    uint    The given account's balance
     */
     function _showBalanceOfGivenAccount(address accountAddress) internal returns(uint) {
-        vm.prank(ANVIL_FIRST_ADDRESS);
         uint accountBalance = _deployedContract.balanceOf(accountAddress);
 
         console.log(string.concat("Balance of account ", Strings.toHexString(uint256(uint160(accountAddress)), 20), 
@@ -83,7 +82,6 @@ contract InteractWithDeployedContractScript is Script {
     * @param    uint    The amount to withdraw
     */
     function _withdraw(uint amount) internal {
-        vm.prank(ANVIL_FIRST_ADDRESS);
         _deployedContract.withdraw(amount);
     }
 }
