@@ -3,7 +3,6 @@ pragma solidity ^0.8.19;
 
 import "forge-std/Script.sol";
 import "forge-std/console.sol";
-import "forge-std/Test.sol";
 import "openzeppelin/contracts/utils/Strings.sol";
 
 import "../src/interfaces/IWETH9.sol";
@@ -14,16 +13,16 @@ import "../src/interfaces/IWETH9.sol";
 * @notice 
 *   Some interactions with an already deployed contract
 *   I took the WETH9 contract, and tested it on a local fork of mainnet
-*   We use startHoax(walletAddress) to call methods as a wallet,
+*   We use startPrank(walletAddress) to call methods as a wallet,
 *   as making operation with a contract's address (default case) can lead to some bugs
 */
-contract InteractWithDeployedContractScript is Script, Test {
+contract InteractWithDeployedContractScript is Script {
     address immutable WETH9_CONTRACT_ADDRESS = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
     address immutable ANVIL_FIRST_ADDRESS = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
     WETH9 _deployedContract;
 
     function run() external {
-        startHoax(ANVIL_FIRST_ADDRESS);
+        vm.startPrank(ANVIL_FIRST_ADDRESS);
 
         // Accessing to already deployed contract with his address
         _deployedContract = WETH9(WETH9_CONTRACT_ADDRESS);
