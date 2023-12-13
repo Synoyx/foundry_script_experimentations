@@ -4,3 +4,11 @@
 
 In this project, I try different things with foundry scripts.
 The goal is to create a database of use cases, to use it as a cheatsheet for next projects
+
+## InteractWithDeployedContracts
+
+Path : scripts/InteractWithDeployedContracts.s.sol
+How to use :
+
+- Deploy a mainnet's fork with 'anvil --fork-url https://eth-mainnet.g.alchemy.com/v2/ALCHEMY_API_KEY'
+- On the root of this project, call 'forge script scripts/InteractWithDeployedContracts.s.sol --rpc-url localhost'
